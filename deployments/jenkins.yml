@@ -14,6 +14,9 @@ spec:
       containers:
         - name: custom-jenkins
           image: 172.30.1.1:5000/myproject/custom-jenkins
+          env:
+            - name: "JENKINS_PASSWORD"
+              value: "admin"
           ports:
             - containerPort: 8080
               protocol: TCP
