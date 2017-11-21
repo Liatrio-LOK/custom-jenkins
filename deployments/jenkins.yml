@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: custom-jenkins
-          image: 172.30.1.1:5000/myproject/custom-jenkins@sha256:a72144d5412a13ecf9c54baef4750406b6c88ac56f57410a481ca9cd69047ca6
+          image: 172.30.1.1:5000/myproject/custom-jenkins
           ports:
             - containerPort: 8080
               protocol: TCP
