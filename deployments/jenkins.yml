@@ -22,3 +22,14 @@ spec:
             - containerPort: 8443
               protocol: TCP
       imagePullPolicy: Always
+    triggers:
+      - type: "ImageChange"
+        imageChangeParams:
+          automatic: true
+          containerNames:
+            - "custom-jenkins"
+          from:
+            kind: "ImageStreamTag"
+            name: "custom-jenkins-build:latest"
+    strategy:
+      type: "Rolling"
