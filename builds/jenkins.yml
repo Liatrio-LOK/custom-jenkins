@@ -3,6 +3,10 @@ kind: BuildConfig
 metadata:
   name: custom-jenkins-build
 spec:
+  triggers:
+    - type: "git"
+      git:
+        uri: https://github.com/JGuzman4/custom-jenkins
   source:                       
     git:
       uri: https://github.com/JGuzman4/custom-jenkins
