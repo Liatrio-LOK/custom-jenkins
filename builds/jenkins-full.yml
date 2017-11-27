@@ -1,3 +1,30 @@
+---
+apiVersion: v1
+kind: BuildConfig
+metadata:
+  name: custom-jenkins-build
+spec:
+  triggers:
+    - type: "git"
+      git:
+        uri: https://github.com/JGuzman4/custom-jenkins
+  source:                       
+    git:
+      uri: https://github.com/JGuzman4/custom-jenkins
+      ref: "master"
+    type: Git
+  strategy:                     
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        name: jenkins:latest
+        namespace: openshift
+    type: Source
+  output:                       
+    to:
+      kind: ImageStreamTag
+      name: custom-jenkins:latest
+---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -18,10 +45,6 @@ spec:
           env:
             - name: "JENKINS_PASSWORD"
               value: "admin"
-            - name: "OPENSHIFT_ENABLE_OAUTH"
-              value: "true"
-            - name: "OPENSHIFT_ENABLE_REDIRECT_PROMPT"
-              value: "true"
           ports:
             - containerPort: 8080
               protocol: TCP
@@ -41,3 +64,23 @@ spec:
             name: "custom-jenkins-build:latest"
     strategy:
       type: "Rolling"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: custom-jenkins
+  name: custom-jenkins
+spec:
+  ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+      name: ui
+    - port: 8081
+      protocol: TCP
+      targetPort: 8081
+      name: jnlp
+  selector:
+    app: custom-jenkins
+  type: LoadBalancer
